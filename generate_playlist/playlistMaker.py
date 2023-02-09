@@ -46,7 +46,8 @@ class playlistmaker:
             "description": "Recommended songs by Spotify Matched c:",
             "public": True
         })
-        url = f"https://api.spotify.com/v1/users/{self._user_id}/playlists"  # this one actually doesn't work, need to make a function for returning the separate user id
+        struserid = ""
+        url = f"https://api.spotify.com/v1/users/{struserid}/playlists"
         response = self._place_post_api_request(url, data)
         response_json = response.json()
         playlist_id = response_json["id"]
