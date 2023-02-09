@@ -46,7 +46,7 @@ class playlistmaker:
             "description": "Recommended songs by Spotify Matched c:",
             "public": True
         })
-        struserid = ""
+        struserid = "" # put userID here
         url = f"https://api.spotify.com/v1/users/{struserid}/playlists"
         response = self._place_post_api_request(url, data)
         response_json = response.json()
