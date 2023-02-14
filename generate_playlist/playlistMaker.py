@@ -6,17 +6,17 @@ from playlist import Playlist
 
 class playlistmaker:
 
-    def __init__(self, authorizationToken, user_id):
+    def __init__(self, authorizationToken, user_id_auth):
         """
         :param authorization_token (str): Spotify API token
         :param user_id (str): Spotify user id
         """
         self.authorizationToken = authorizationToken
-        self._user_id = user_id
+        self.userAuthorization = user_id_auth
 
     def get_top_tracks(self, limit):
         """Get the top n tracks played by a user
-        :param limit (int): Number of tracks to get. Set to 20 for now
+        :param limit (int): Number of tracks to get. Should be <= 50
         :return tracks (list of Track): List of last played tracks
         """
         url = f"https://api.spotify.com/v1/me/top/tracks?limit={limit}"
@@ -28,26 +28,47 @@ class playlistmaker:
         #     outfile.write(json_object)
         # f = open('test.json')
         #
+        # # returns JSON object as
+        # # a dictionary
         # data = json.load(f)
         #
+        # # Iterating through the json
+        # # list
         # for i in data['items']:
         #     print(i)
+        # Closing file
         # f.close()
         tracks = [Track(track["name"], track["id"], track["artists"][0]["name"]) for track in response_json["items"]]
         return tracks
+
+
+    def get_user_id(self):
+        """Get the user ID of user to access their Spotify and create a playlist
+        :return userid: unique string for finding user's Spotify"""
+        url = f"https://api.spotify.com/v1/me"
+        response = self._place_get_user_api_request(url)
+        response_json = response.json()
+        # json testing for debugging purposes
+        # json_object = json.dumps(response_json)
+        # with open("test.json", "w") as outfile:
+        #     outfile.write(json_object)
+        # f = open('test.json')
+        userid = response_json["id"]
+        return userid
+
     
     def create_playlist(self, name):
         """
         :param name (str): New playlist name
         :return playlist (Playlist): Newly created playlist
         """
+        userid = self.get_user_id()
         data = json.dumps({
             "name": name,
             "description": "Recommended songs by Spotify Matched c:",
             "public": True
         })
-        struserid = "" # put userID here
-        url = f"https://api.spotify.com/v1/users/{struserid}/playlists"
+        url = f"https://api.spotify.com/v1/users/31iqklcweczydwupqkc6f72t6wfq/playlists"
         response = self._place_post_api_request(url, data)
         response_json = response.json()
         playlist_id = response_json["id"]
@@ -67,7 +88,17 @@ class playlistmaker:
         response = self._place_post_api_request(url, data)
         response_json = response.json()
         return response_json
-    
+
+    def _place_get_user_api_request(self, url):
+        response = requests.get(
+            url,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.userAuthorization}"
+            }
+        )
+        return response
+
     def _place_get_api_request(self, url):
         response = requests.get(
             url,
