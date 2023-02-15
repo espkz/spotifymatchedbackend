@@ -23,6 +23,10 @@ def main():
 
     # populate playlist with recommended tracks
     pm.populate_playlist(playlist, top_tracks)
+    
+    # get link to playlist
+    link = pm.get_playlist_link()
+    print(link)
 
 
 if __name__ == "__main__":
