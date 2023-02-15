@@ -10,6 +10,10 @@ https://lvngd.com/blog/accessing-spotify-api-python/
 
 https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-artist
 
+https://developer.spotify.com/console/get-current-user/
+
+https://developer.spotify.com/console/post-playlists/
+
 To Do:
 
 Make API call to get authorization tokens and userID
