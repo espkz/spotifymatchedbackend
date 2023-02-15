@@ -14,6 +14,8 @@ https://developer.spotify.com/console/get-current-user/
 
 https://developer.spotify.com/console/post-playlists/
 
+https://developer.apple.com/documentation/applemusicapi/ (possible exploration)
+
 To Do:
 
 Make API call to get authorization tokens and userID
