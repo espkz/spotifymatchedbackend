@@ -1,3 +1,11 @@
+"""
+Playlist making class, for now helps create a playlist with top 20 tracks
+Author: Ellie Paek
+Source (cloned and edited): https://github.com/musikalkemist/spotifyplaylistgenerator
+To do: remove duplicate songs, combine multiple users' songs into a playlist, separate by genre
+Updated: 2023/02/15 — removing duplicates
+"""
+
 import json
 import requests
 
@@ -13,12 +21,15 @@ class playlistmaker:
         """
         self.authorizationToken = authorizationToken
         self.playlistid = ""
+        # for removing duplicates
+        self.playlistsongs = list()
 
-    def get_top_tracks(self, limit):
-        """Get the top n tracks played by a user
+    def get_tracks(self, limit):
+        """Get the top and recent n tracks played by a user
         :param limit (int): Number of tracks to get. Should be <= 50
         :return tracks (list of Track): List of last played tracks
         """
+        # get top tracks first
         url = f"https://api.spotify.com/v1/me/top/tracks?limit={limit}"
         response = self._place_get_api_request(url)
         response_json = response.json()
@@ -39,8 +50,22 @@ class playlistmaker:
         # # Closing file
         # f.close()
         tracks = [Track(track["name"], track["id"], track["artists"][0]["name"]) for track in response_json["items"]]
-        return tracks
 
+        # reset the url to get recently played tracks
+        url = f"https://api.spotify.com/v1/me/player/recently-played?limit={limit}"
+        response = self._place_get_api_request(url)
+        response_json = response.json()
+        for track in response_json["items"]:
+            tracks.append(Track(track["track"]["name"], track["track"]["id"], track["track"]["artists"][0]["name"]))
+        # remove duplicates
+        tracks = set(tracks)
+        # bug check
+        # print("Tracks:")
+        # for i in tracks:
+        #     print(i.name)
+        # print(tracks)
+        # print(len(tracks))
+        return tracks
 
     def get_user_id(self):
         """Get the user ID of user to access their Spotify and create a playlist
@@ -48,22 +73,6 @@ class playlistmaker:
         url = f"https://api.spotify.com/v1/me"
         response = self._place_get_api_request(url)
         response_json = response.json()
-        # json testing for debugging purposes
-        # json_object = json.dumps(response_json)
-        # with open("test.json", "w") as outfile:
-        #     outfile.write(json_object)
-        # f = open('test.json')
-        #
-        # # returns JSON object as
-        # # a dictionary
-        # data = json.load(f)
-        #
-        # # Iterating through the json
-        # # list
-        # for i in data['items']:
-        #     print(i)
-        # Closing file
-        # f.close()
         userid = response_json["id"]
         return userid
 
