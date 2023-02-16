@@ -1,4 +1,7 @@
-# class of a song track
+"""
+Song track class
+Author: Ellie Paek
+"""
 
 class Track:
 
@@ -18,3 +21,12 @@ class Track:
     
     def __str__(self):
         return self.name + " by " + self.artist
+
+    def __repr__(self):
+        return '<track {}>'.format(self.id)
+
+    def __eq__(self, other):
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id)
