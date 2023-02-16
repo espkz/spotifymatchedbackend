@@ -1,33 +1,31 @@
+"""
+A testing function for creating a basic playlist
+Author: Ellie Paek
+"""
+
 import os
 
 from playlistMaker import playlistmaker
 
 def main():
-    
-    # Export the environment variables:
-    # $ export SPOTIFY_AUTHORIZATION_TOKEN=value_grabbed_from_spotify
-    # $ export SPOTIFY_USER_ID=value_grabbed_from_spotify
-    # or otherwise manually put it in as variables and substitute
-    # auth = ""
-    # id = ""
-    
-    pm = playlistmaker(os.getenv("SPOTIFY_AUTHORIZATION_TOKEN"), os.getenv("SPOTIFY_USER_ID")) # auth, id
-    
-    # get last played tracks
-    num_tracks = 20
-    top_tracks = pm.get_top_tracks(num_tracks)
+    # replace auth with whatever token yoinked from the web Spotify API
+    auth = "BQAv1lpFoidaAACqfq6Au5TXvhGtJY3xpXgiFPH1BiRTvUnj--Y5LbAWuaz0pTSO7ttCpS25iI572L0rdU3U9jeFtx6a1FQIQwHEm23hV8agZETmo136ZiiKMpSadlFpntvAK_SyEmCJdtY9Z2NckquQ69Rn_49-P8-5L10FYHaFDAnAbuwqLSP_xNIATEZHH8zB_PUNCZeNuV4MNUl6jwkOsZvnXoTsBzJRWTHNKrPwZWNm2uFb9xnqcVeM-yd5wFKaG3Uu4luL8buvtmaTePw5_eTHorvry2XInA"
+    pm = playlistmaker(auth)
+    # os.getenv("SPOTIFY_AUTHORIZATION_TOKEN"),
 
+    # get tracks
+    num_tracks = 20
+    tracks = pm.get_tracks(num_tracks)
 
     # get playlist name from user and create playlist
     playlist = pm.create_playlist("Test")
 
     # populate playlist with recommended tracks
-    pm.populate_playlist(playlist, top_tracks)
-    
+    pm.populate_playlist(playlist, tracks)
+
     # get link to playlist
     link = pm.get_playlist_link()
     print(link)
-
 
 if __name__ == "__main__":
     main()
