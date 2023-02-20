@@ -18,4 +18,4 @@ https://developer.apple.com/documentation/applemusicapi/ (possible exploration)
 
 To Do:
 
-Make API call to get authorization tokens and userID
+Separate songs by genre and add additional songs on top of it
