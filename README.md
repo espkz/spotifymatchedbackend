@@ -1,5 +1,5 @@
-# spotifymatchedbackend
-Backend work for Spotify Matched; mostly for local testing
+# musaicbackend
+Backend work for Musaic; mostly for local testing
 
 
 Current Resources and Credits:
